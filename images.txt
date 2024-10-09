@@ -1,1 +1,2 @@
+--env NEO4J_PLUGINS='["graph-data-science"]'
 neo4j:latest
