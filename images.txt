@@ -1,1 +1,1 @@
-vllm/vllm-openai:latest
+pytorch/pytorch:1.10.0-cuda11.1-cudnn8
