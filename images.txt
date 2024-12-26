@@ -1,1 +1,1 @@
-arm64v8/nginx:1.27.3-otel
+arm64v8/nginx:1.27.3-otel@sha256:7de3eec83e4236d9a25ff83e154273a18dda4de34ef7c8d908de76e60e9bebb1
