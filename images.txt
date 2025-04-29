@@ -1,4 +1,1 @@
-langgenius/dify-api:1.2.0
-langgenius/dify-web:1.2.0
-langgenius/dify-sandbox:0.2.11
-langgenius/dify-plugin-daemon:0.0.7-local
+vllm/vllm-openai:0.8.4
