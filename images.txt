@@ -1,1 +1,1 @@
-vllm/vllm-openai:0.8.5.post1
+vllm/vllm-openai:0.8.4
