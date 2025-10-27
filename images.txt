@@ -1,1 +1,4 @@
-mysql:8.0
+semitechnologies/weaviate:1.27.0
+langgenius/dify-api:1.9.2
+langgenius/dify-web:1.9.2
+langgenius/dify-plugin-daemon:0.3.3-local
