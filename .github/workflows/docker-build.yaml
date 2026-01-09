@@ -1,0 +1,111 @@
+name: Docker Build
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths:
+      - 'Dockerfile'
+      - 'docker-build.txt'
+      - '.github/workflows/docker-build.yaml'
+
+env:
+  ALIYUN_REGISTRY: "${{ secrets.ALIYUN_REGISTRY }}"
+  ALIYUN_NAME_SPACE: "${{ secrets.ALIYUN_NAME_SPACE }}"
+  ALIYUN_REGISTRY_USER: "${{ secrets.ALIYUN_REGISTRY_USER }}"
+  ALIYUN_REGISTRY_PASSWORD: "${{ secrets.ALIYUN_REGISTRY_PASSWORD }}"
+
+jobs:
+  build:
+    name: Build and Push
+    runs-on: ubuntu-latest
+    steps:
+    - name: Before freeing up disk space
+      run: |
+        echo "Before freeing up disk space"
+        echo "=============================================================================="
+        df -hT
+        echo "=============================================================================="
+
+    - name: Maximize build space
+      uses: easimon/maximize-build-space@master
+      with:
+        root-reserve-mb: 2048
+        swap-size-mb: 128
+        remove-dotnet: 'true'
+        remove-haskell: 'true'
+        build-mount-path: '/var/lib/docker/'
+
+    - name: Restart docker
+      run: sudo service docker restart
+
+    - name: Free up disk space complete
+      run: |
+        echo "Free up disk space complete"
+        echo "=============================================================================="
+        df -hT
+        echo "=============================================================================="
+
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Docker Setup Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Login to Aliyun Registry
+      uses: docker/login-action@v3
+      with:
+        registry: ${{ secrets.ALIYUN_REGISTRY }}
+        username: ${{ secrets.ALIYUN_REGISTRY_USER }}
+        password: ${{ secrets.ALIYUN_REGISTRY_PASSWORD }}
+
+    - name: Build and push images
+      run: |
+        docker login -u $ALIYUN_REGISTRY_USER -p $ALIYUN_REGISTRY_PASSWORD $ALIYUN_REGISTRY
+        
+        while IFS= read -r line || [ -n "$line" ]; do
+            [[ -z "$line" ]] && continue
+            if echo "$line" | grep -q '^\s*#'; then
+                continue
+            fi
+            
+            echo "Processing build config: $line"
+            
+            IMAGE_NAME=$(echo "$line" | awk '{print $1}')
+            DOCKERFILE_PATH=$(echo "$line" | awk '{print $2}')
+            BUILD_CONTEXT=$(echo "$line" | awk '{print $3}')
+            TAGS=$(echo "$line" | awk '{for(i=4;i<=NF;i++) printf "%s ", $i}')
+            
+            DOCKERFILE_PATH=${DOCKERFILE_PATH:-"./Dockerfile"}
+            BUILD_CONTEXT=${BUILD_CONTEXT:-"."}
+            
+            echo "Image Name: $IMAGE_NAME"
+            echo "Dockerfile: $DOCKERFILE_PATH"
+            echo "Build Context: $BUILD_CONTEXT"
+            echo "Tags: $TAGS"
+            
+            if [ ! -f "$DOCKERFILE_PATH" ]; then
+                echo "Error: Dockerfile not found at $DOCKERFILE_PATH"
+                continue
+            fi
+            
+            FULL_IMAGE="$ALIYUN_REGISTRY/$ALIYUN_NAME_SPACE/$IMAGE_NAME"
+            
+            echo "Building image: $FULL_IMAGE"
+            echo "=============================================================================="
+            
+            docker buildx build \
+              --file "$DOCKERFILE_PATH" \
+              --context "$BUILD_CONTEXT" \
+              --platform linux/amd64,linux/arm64 \
+              --push \
+              --tag "$FULL_IMAGE:latest" \
+              $TAGS \
+              .
+            
+            echo "Build and push completed for: $IMAGE_NAME"
+            echo "=============================================================================="
+            df -hT
+            echo "=============================================================================="
+            
+        done < docker-build.txt

@@ -1,0 +1,14 @@
+FROM alpine:latest
+
+LABEL maintainer="your-email@example.com"
+
+RUN apk add --no-cache \
+    curl \
+    bash \
+    vim
+
+WORKDIR /app
+
+COPY . .
+
+CMD ["/bin/bash"]
