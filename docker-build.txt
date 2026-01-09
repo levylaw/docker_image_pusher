@@ -1,8 +1,2 @@
 # Dockerfile 构建配置文件
-# 格式：镜像名称 Dockerfile路径 构建上下文 额外的标签
-# 示例：
-# my-app ./Dockerfile . --tag my-app:v1.0 --tag my-app:stable
-# web-app ./web/Dockerfile ./web --tag web-app:latest
-
-# 示例配置（取消注释以使用）
-# my-app ./Dockerfile.example . --tag my-app:1.0.0
+docker build -t pg15-zhparser .
