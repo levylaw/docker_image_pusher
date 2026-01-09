@@ -96,12 +96,11 @@ jobs:
             
             docker buildx build \
               --file "$DOCKERFILE_PATH" \
-              --context "$BUILD_CONTEXT" \
               --platform linux/amd64,linux/arm64 \
               --push \
               --tag "$FULL_IMAGE:latest" \
               $TAGS \
-              .
+              "$BUILD_CONTEXT"
             
             echo "Build and push completed for: $IMAGE_NAME"
             echo "=============================================================================="
