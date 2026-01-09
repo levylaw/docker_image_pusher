@@ -21,10 +21,10 @@ RUN wget -q -O - http://www.xunsearch.com/scws/down/scws-$SCWS_VERSION.tar.bz2 |
     && rm -rf scws-$SCWS_VERSION
 
 # 3. 下载并安装 zhparser
-# 关键修复：通过 with_llvm=no 禁用对 clang 的依赖
+# 关键修复：通过 LLVM_CONFIG=none 禁用对 clang 的依赖
 RUN git clone --depth 1 https://github.com/amutu/zhparser.git \
     && cd zhparser \
-    && make with_llvm=no \
+    && LLVM_CONFIG=none make \
     && make install \
     && cd .. \
     && rm -rf zhparser
