@@ -1,3 +1,1 @@
-langgenius/dify-api:1.10.1
-langgenius/dify-web:1.10.1
-langgenius/dify-plugin-daemon:0.4.1-local
+postgres:15
