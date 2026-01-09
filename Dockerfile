@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     git \
     wget \
-    libpq-dev \
+    postgresql-server-dev-16 \
     libc-dev \
     && rm -rf /var/lib/apt/lists/*
 
@@ -29,7 +29,7 @@ RUN git clone --depth 1 https://github.com/amutu/zhparser.git \
     && rm -rf zhparser
 
 # 4. 清理编译依赖
-RUN apt-get remove -y build-essential git wget libpq-dev libc-dev \
+RUN apt-get remove -y build-essential git wget postgresql-server-dev-16 libc-dev \
     && apt-get autoremove -y \
     && rm -rf /var/lib/apt/lists/*
 
