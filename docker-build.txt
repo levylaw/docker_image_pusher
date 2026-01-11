@@ -1,4 +1,7 @@
 # Dockerfile 构建配置文件
-# 格式：镜像名称 Dockerfile路径 构建上下文
-# pg16-zhparser ./Dockerfile .
-py-chatter:1.0 ./Dockerfile .
+# 格式：镜像名称 Dockerfile路径 构建上下文 [--tag 版本号]
+# 示例：
+#   pg16-zhparser ./Dockerfile .                              # 只构建 latest 标签
+#   py-chatter ./Dockerfile . --tag 1.0                        # 构建 latest 和 1.0 标签
+#   myapp ./Dockerfile . --tag 1.0 --tag 2.0                  # 构建 latest、1.0 和 2.0 标签
+py-chatter ./Dockerfile . --tag 1.0

@@ -82,7 +82,7 @@ jobs:
             echo "Image Name: $IMAGE_NAME"
             echo "Dockerfile: $DOCKERFILE_PATH"
             echo "Build Context: $BUILD_CONTEXT"
-            echo "Tags: $TAGS"
+            echo "Raw Tags: $TAGS"
             
             if [ ! -f "$DOCKERFILE_PATH" ]; then
                 echo "Error: Dockerfile not found at $DOCKERFILE_PATH"
@@ -94,12 +94,28 @@ jobs:
             echo "Building image: $FULL_IMAGE"
             echo "=============================================================================="
             
+            # 解析额外的标签，支持 --tag 1.0 格式
+            EXTRA_TAGS=""
+            VERSION_TAG=""
+            for arg in $TAGS; do
+                if [[ "$arg" == "--tag" ]]; then
+                    VERSION_TAG="true"
+                elif [[ "$VERSION_TAG" == "true" ]]; then
+                    # 这是一个版本号，需要拼接完整的镜像名
+                    EXTRA_TAGS="$EXTRA_TAGS --tag $FULL_IMAGE:$arg"
+                    VERSION_TAG=""
+                    echo "Added tag: $FULL_IMAGE:$arg"
+                else
+                    EXTRA_TAGS="$EXTRA_TAGS $arg"
+                fi
+            done
+            
             docker buildx build \
               --file "$DOCKERFILE_PATH" \
               --platform linux/amd64,linux/arm64 \
               --push \
               --tag "$FULL_IMAGE:latest" \
-              $TAGS \
+              $EXTRA_TAGS \
               "$BUILD_CONTEXT"
             
             echo "Build and push completed for: $IMAGE_NAME"
