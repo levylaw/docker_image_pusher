@@ -1,3 +1,4 @@
 # Dockerfile 构建配置文件
 # 格式：镜像名称 Dockerfile路径 构建上下文
-pg16-zhparser ./Dockerfile .
+# pg16-zhparser ./Dockerfile .
+py-chatter:1.0 ./Dockerfile .

@@ -1,0 +1,16 @@
+fastapi
+uvicorn
+PyJWT
+python-multipart
+httpx
+psycopg2-binary
+python-dotenv
+cryptography
+pydantic
+ndjson
+requests
+langchain-text-splitters
+boto3
+pycryptodome
+nanoid
+python-dateutil
