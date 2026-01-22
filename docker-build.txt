@@ -4,4 +4,4 @@
 #   pg16-zhparser ./Dockerfile .                              # 只构建 latest 标签
 #   py-chatter ./Dockerfile . --tag 1.0                        # 构建 latest 和 1.0 标签
 #   myapp ./Dockerfile . --tag 1.0 --tag 2.0                  # 构建 latest、1.0 和 2.0 标签
-py-talkative ./Dockerfile . --tag 1.0
+py-talkative ./Dockerfile . --tag 2.0
