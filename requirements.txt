@@ -3,7 +3,7 @@ uvicorn
 PyJWT
 python-multipart
 httpx
-psycopg2-binary
+asyncpg
 python-dotenv
 cryptography
 pydantic
