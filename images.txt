@@ -1,4 +1,1 @@
-langgenius/dify-api:1.11.4
-langgenius/dify-web:1.11.4
-mysql:8.0
-langgenius/dify-plugin-daemon:0.5.2-local
+nginx:latest
